@@ -95,8 +95,36 @@ Enabling access to all plans of service redis32 for all orgs as admin...
 OK
 ```
 
-Each of your services will be now available in the service catalog/marketplace:
+Each of your services will be now available in the service catalog/marketplace (as demonstrated above):
 
 ```
 cf marketplace
 ```
+
+You an now provision each of the services, for example:
+
+```
+cf create-service redis32 free redis1
+```
+
+Either you can bind `redis1` to an application; or you can request service keys to see the credentials yourself:
+
+```
+cf create-service-key redis1 redis1-key
+cf service-key redis1 redis1-key
+```
+
+For a redis service the output might look like below. For other services it will differ.
+
+```yaml
+{
+ "hostname": "10.244.0.144",
+ "password": "yu8qixgw15bmdum1",
+ "port": "32768",
+ "ports": {
+  "6379/tcp": "32768"
+ }
+}
+```
+
+Your ability to directly connect to the service will be determined by networking.
