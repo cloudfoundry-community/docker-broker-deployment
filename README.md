@@ -72,10 +72,10 @@ bosh2 deploy docker-broker.yml --vars-store tmp/creds.yml \
   -o services/op-postgresql96.yml \
   -o services/op-mysql56.yml \
   -o services/op-redis32.yml \
-  -v cf_api_url=<https://api.mycf.com> \
-  -v cf_skip_ssl_validation=false
-  -v cf_admin_username=admin \
-  -v cf_admin_password=password
+  -v cf-api-url=<https://api.mycf.com> \
+  -v cf-skip-ssl-validation=false
+  -v cf-admin-username=admin \
+  -v cf-admin-password=password
 ```
 
 Then run `bosh2 run-errand broker-registrar` one-off task:
