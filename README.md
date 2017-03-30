@@ -17,7 +17,7 @@ And here's an animated GIF of provisioning a service, and `ctop` (running at the
 
 ![ctop](cf-create-service-ctop.gif)
 
-I haven't yet tried integrating it with Kubernetes via https://github.com/kubernetes-incubator/service-catalog - but I'm sure it works and I'm sure its fabulous. I will look into this soon. In the meantime, here's @pmorie [playing around with the K8s Service Broker](https://www.youtube.com/watch?v=tRAv5PozgNE). Technically I should demonstrate this service broker in this README... but Paul has awesome hair in the video.
+I haven't yet tried integrating it with Kubernetes via https://github.com/kubernetes-incubator/service-catalog - but I'm sure it works and I'm sure its fabulous. I will look into this soon. In the meantime, here's [@pmorie](https://github.com/pmorie) [playing around with the K8s Service Broker](https://www.youtube.com/watch?v=tRAv5PozgNE). Technically I should demonstrate this service broker in this README... but Paul has awesome hair in the video.
 
 This all sounds great, right. Excellent! Let's boot this thing up!
 
