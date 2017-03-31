@@ -56,9 +56,28 @@ bosh2 deploy docker-broker.yml \
   -o services/op-redis32.yml
 ```
 
-That's it! BOSH will bring up a VM that will run `docker` daemon and the local service broker [`cf-containers-broker`](https://github.com/cloudfoundry-community/cf-containers-broker/), and will start downloading the three Docker images corresponding to the three `services/*.yml` files included above.
+That's it! BOSH will bring up a cluster of servers that each run the `docker` daemon. They also each have a local agent [`cf-containers-broker`](https://github.com/cloudfoundry-community/cf-containers-broker/), and will start downloading the three Docker images corresponding to the three `services/*.yml` files included above. The deployment also includes the coordinating service broker `subway`.
+
+To see the list of servers running, use `bosh2 instances`:
+
+```
+Instance                                          Process State  AZ  IPs
+docker/0cc28eb1-0fd1-4929-a529-b90aed2933e2       running        z1  10.244.0.151
+docker/14c56cc6-05dc-4eba-b1ee-776fb6e345d1       running        z3  10.244.0.157
+docker/b3f2a25d-adf6-410b-8057-160d723fbd65       running        z2  10.244.0.156
+sanity-test/7299137a-89c2-4c3e-bf76-d33255171d57  -              z1  10.244.0.158
+subway/f1c65dd9-7ab6-4192-98cc-749711cd0ce5       running        z1  10.244.0.155
+```
 
 Once deployed, you can dynamically provision new Docker containers using the Service Broker API.
+
+To confirm that each included service - `postgresql96`, `redis32` and `mysql56` - is working, run the `sanity-test` errand:
+
+```
+bosh2 run-errand sanity-test
+```
+
+The `subway` instance is the Service Broker API for provisioning/binding/unbinding/unprovisioning, and is running on port `8000`.
 
 ### Integration with Cloud Foundry
 
@@ -75,10 +94,20 @@ bosh2 deploy docker-broker.yml --vars-store tmp/creds.yml \
   -v cf-api-url=<https://api.mycf.com> \
   -v cf-skip-ssl-validation=false
   -v cf-admin-username=admin \
-  -v cf-admin-password=password
+  -v cf-admin-password=password \
+  -v broker_route_name=docker-broker \
+  -v broker_route_uri=<docker-broker.mycf.com>
 ```
 
-Then run `bosh2 run-errand broker-registrar` one-off task:
+Update the `-v` variables for your Cloud Foundry and system domain.
+
+Again to confirm that the API is available via the new route and the system is still working, run the `sanity-test` errand again:
+
+```
+bosh2 run-errand sanity-test
+```
+
+Next, run the `bosh2 run-errand broker-registrar` one-off errand to register the service broker with your Cloud Foundry (using the admin credentials included in `-v` variables above):
 
 ```
 bosh2 run-errand broker-registrar
@@ -126,5 +155,3 @@ For a redis service the output might look like below. For other services it will
  }
 }
 ```
-
-Your ability to directly connect to the service will be determined by networking.
