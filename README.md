@@ -33,7 +33,7 @@ Regardless where you will be running your apps - Cloud Foundry, Kubernetes, Open
 * What is the Open Service Broker API? ([announcement blog post](https://www.openservicebrokerapi.org/blog/2016/12/13/why-cloud-foundry-is-making-the-open-service-broker-api-even-more-open))
 * Bootstrapping your BOSH director https://github.com/cloudfoundry/bosh-deployment
 * [optional] Bootstrapping Cloud Foundry https://github.com/cloudfoundry/cf-deployment
-* Bootstrapping Docker Services (this project) https://github.com/cloudfoundry-community/docker-services-deployment
+* Bootstrapping Docker Services (this project) https://github.com/cloudfoundry-community/docker-broker-deployment
 
 ## Preparation
 
