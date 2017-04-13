@@ -62,6 +62,15 @@ instance_groups:
     consumes:
       servicebroker:
         from: subway
+      docker-broker-catalog:
+        from: backend
+  - name: docker
+    release: docker
+    properties:
+      tcp_address: 0.0.0.0
+      tls_cacert: "((docker-tls.ca))"
+      tls_cert: "((docker-tls.certificate))"
+      tls_key: "((docker-tls.private_key))"
 
 variables:
 - name: subway-broker-password
@@ -97,11 +106,10 @@ update:
 
 releases:
 - name: cf-subway
-  version: latest
-  # version: 3.0.0
-  # url: https://bosh.io/d/github.com/cloudfoundry-community/cf-subway-boshrelease?v=3.0.0
-  # sha1: 4e241dff1552e626e0677941da69944eafeca1ff
+  version: 3.1.0
+  url: https://bosh.io/d/github.com/cloudfoundry-community/cf-subway-boshrelease?v=3.1.0
+  sha1: bf4c18287e48dc0f86b7c0198ec4a09dc36b6451
 - name: docker
-  version: 30.0.0-rc.21
-  url: https://github.com/cloudfoundry-community/docker-boshrelease/releases/download/v30.0.0-rc.21/docker-30.0.0-rc.21.tgz
-  sha1: 0fc0da5857884a7a98cb537540a88ef9d2e9efa3
+  version: 30.0.0
+  url: https://github.com/cloudfoundry-community/docker-boshrelease/releases/download/v30.0.0/docker-30.0.0.tgz
+  sha1: d0936ebf27b2d7950fcc9042720b6fd28bcb631b
