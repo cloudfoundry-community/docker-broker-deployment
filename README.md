@@ -27,7 +27,7 @@ This project is everything you need to deploy an Open Service Broker - useful wi
 
 You can also interact directly with the API to provision and deprovision stateful services.
 
-Regardless where you will be running your apps - Cloud Foundry, Kubernetes, Open Shift, etc - you will deploy this magnificent system using BOSH, because BOSH is super awesome at managing infrastructure over the many decades you'll want to keep your stateful services running. You might also want to use BOSH to deploy your app platform (see https://github.com/pivotal-cf-experimental/kubo-deployment for Kubernetes).
+Regardless where you will be running your apps - Cloud Foundry, Kubernetes, Open Shift, etc - you will deploy this magnificent system using BOSH, because BOSH is super awesome at managing infrastructure over the many decades you'll want to keep your stateful services running. You might also want to use BOSH to deploy your app platform (see https://github.com/cloudfoundry-incubator/kubo-deployment for Kubernetes).
 
 * What is BOSH? http://bosh.io/docs
 * What is the Open Service Broker API? ([announcement blog post](https://www.openservicebrokerapi.org/blog/2016/12/13/why-cloud-foundry-is-making-the-open-service-broker-api-even-more-open))
