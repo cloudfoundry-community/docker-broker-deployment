@@ -95,8 +95,8 @@ bosh2 deploy docker-broker.yml --vars-store tmp/creds.yml \
   -v cf-skip-ssl-validation=false
   -v cf-admin-username=admin \
   -v cf-admin-password=password \
-  -v broker_route_name=docker-broker \
-  -v broker_route_uri=<docker-broker.mycf.com>
+  -v broker-route-name=docker-broker \
+  -v broker-route-uri=<docker-broker.mycf.com>
 ```
 
 Update the `-v` variables for your Cloud Foundry and system domain.
