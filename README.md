@@ -37,8 +37,6 @@ Regardless where you will be running your apps - Cloud Foundry, Kubernetes, Open
 
 ## Preparation
 
-Your BOSH needs to have a cloud-config installed with a `default` option for both `networks` & `vm_types`. See `manifests/boshlite-cloud-config.yml`.
-
 Target your BOSH using environment variable:
 
 ```
@@ -49,16 +47,17 @@ export BOSH_DEPLOYMENT=docker-broker
 The example above was created using the following deployment:
 
 ```
-bosh2 deploy docker-broker.yml \
+bosh deploy docker-broker.yml \
   --vars-store tmp/creds.yml \
   -o services/op-postgresql96.yml \
   -o services/op-mysql56.yml \
-  -o services/op-redis32.yml
+  -o services/op-redis32.yml \
+  -o <(./pick-from-cloud-config.sh)
 ```
 
 That's it! BOSH will bring up a cluster of servers that each run the `docker` daemon. They also each have a local agent [`cf-containers-broker`](https://github.com/cloudfoundry-community/cf-containers-broker/), and will start downloading the three Docker images corresponding to the three `services/*.yml` files included above. The deployment also includes the coordinating service broker `subway`.
 
-To see the list of servers running, use `bosh2 instances`:
+To see the list of servers running, use `bosh instances`:
 
 ```
 Instance                                          Process State  AZ  IPs
@@ -74,7 +73,7 @@ Once deployed, you can dynamically provision new Docker containers using the Ser
 To confirm that each included service - `postgresql96`, `redis32` and `mysql56` - is working, run the `sanity-test` errand:
 
 ```
-bosh2 run-errand sanity-test
+bosh run-errand sanity-test
 ```
 
 The `subway` instance is the Service Broker API for provisioning/binding/unbinding/unprovisioning, and is running on port `8000`.
@@ -86,17 +85,25 @@ If you're an administrator for Cloud Foundry, its nice and easy to update your `
 Add `-o op-cf-integration.yml` to the command you ran above to redeploy the `docker-broker`, and the four `cf_*` variables to describe the admin credentials for the Cloud Foundry (which should be deployed by the same BOSH with the name `cf`):
 
 ```
-bosh2 deploy docker-broker.yml --vars-store tmp/creds.yml \
+# name of cf deployment in BOSH, e.g. 'cf'
+cf_deployment=cf
+
+system_domain=$(bosh -d $cf_deployment manifest | bosh int - --path /instance_groups/name=api/jobs/name=cloud_controller_ng/properties/system_domain)
+skip_verify=$(bosh -d $cf_deployment manifest | bosh int - --path /instance_groups/name=api/jobs/name=cloud_controller_ng/properties/ssl/skip_cert_verify)
+admin_password=$(bosh -d $cf_deployment manifest | bosh int - --path /instance_groups/name=uaa/jobs/name=uaa/properties/uaa/scim/users/name=admin/password)
+
+bosh deploy docker-broker.yml --vars-store tmp/creds.yml \
   -o op-cf-integration.yml \
   -o services/op-postgresql96.yml \
   -o services/op-mysql56.yml \
   -o services/op-redis32.yml \
-  -v cf-api-url=<https://api.mycf.com> \
-  -v cf-skip-ssl-validation=false
+  -v cf-api-url=https://api.$system_domain \
+  -v cf-skip-ssl-validation=$skip_verify \
   -v cf-admin-username=admin \
-  -v cf-admin-password=password \
+  -v "cf-admin-password=$admin_password" \
   -v broker-route-name=docker-broker \
-  -v broker-route-uri=<docker-broker.mycf.com>
+  -v broker-route-uri=docker-broker.$system_domain \
+  -o <(./pick-from-cloud-config.sh -o op-cf-integration.yml)
 ```
 
 Update the `-v` variables for your Cloud Foundry and system domain.
@@ -104,13 +111,13 @@ Update the `-v` variables for your Cloud Foundry and system domain.
 Again to confirm that the API is available via the new route and the system is still working, run the `sanity-test` errand again:
 
 ```
-bosh2 run-errand sanity-test
+bosh run-errand sanity-test
 ```
 
-Next, run the `bosh2 run-errand broker-registrar` one-off errand to register the service broker with your Cloud Foundry (using the admin credentials included in `-v` variables above):
+Next, run the `bosh run-errand broker-registrar` one-off errand to register the service broker with your Cloud Foundry (using the admin credentials included in `-v` variables above):
 
 ```
-bosh2 run-errand broker-registrar
+bosh run-errand broker-registrar
 ```
 
 The results will include output that finishes with:
