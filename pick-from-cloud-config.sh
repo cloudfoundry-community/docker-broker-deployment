@@ -13,7 +13,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-instance_groups=$(bosh int <(cat docker-broker.yml) --path /instance_groups | grep "^  name:" | awk '{print $2}' | sort | uniq)
+instance_groups=$(bosh int docker-broker.yml "$@" --path /instance_groups | grep "^  name:" | awk '{print $2}' | sort | uniq)
+
 cloud_config=$(bosh cloud-config)
 if [[ -z ${cloud_config} ]]; then
   echo "BOSH env missing a cloud-config"
