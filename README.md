@@ -85,6 +85,8 @@ If you're an administrator for Cloud Foundry, its nice and easy to update your `
 Add `-o op-cf-integration.yml` to the command you ran above to redeploy the `docker-broker`, and the four `cf_*` variables to describe the admin credentials for the Cloud Foundry (which should be deployed by the same BOSH with the name `cf`):
 
 ```
+export BOSH_DEPLOYMENT=docker-broker
+
 # name of cf deployment in BOSH, e.g. 'cf'
 cf_deployment=cf
 
