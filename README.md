@@ -52,7 +52,7 @@ bosh deploy docker-broker-deployment/docker-broker.yml \
   -o docker-broker-deployment/services/op-postgresql96.yml \
   -o docker-broker-deployment/services/op-mysql56.yml \
   -o docker-broker-deployment/services/op-redis32.yml \
-  -o <(./pick-from-cloud-config.sh)
+  -o <(./docker-broker-deployment/pick-from-cloud-config.sh)
 ```
 
 NOTE: remember to add `--vars-store` if your BOSH environment does not have credhub/config-server.
@@ -107,7 +107,7 @@ bosh deploy docker-broker-deployment/docker-broker.yml \
   -v "cf-admin-password=$admin_password" \
   -v broker-route-name=docker-broker \
   -v broker-route-uri=docker-broker.$system_domain \
-  -o <(./pick-from-cloud-config.sh -o op-cf-integration.yml)
+  -o <(./docker-broker-deployment/pick-from-cloud-config.sh -o op-cf-integration.yml)
 ```
 
 Update the `-v` variables for your Cloud Foundry and system domain.
