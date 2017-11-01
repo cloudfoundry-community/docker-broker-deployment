@@ -47,13 +47,15 @@ export BOSH_DEPLOYMENT=docker-broker
 The example above was created using the following deployment:
 
 ```
-bosh deploy docker-broker.yml \
-  --vars-store tmp/creds.yml \
-  -o services/op-postgresql96.yml \
-  -o services/op-mysql56.yml \
-  -o services/op-redis32.yml \
+git clone https://github.com/cloudfoundry-community/docker-broker-deployment
+bosh deploy docker-broker-deployment/docker-broker.yml \
+  -o docker-broker-deployment/services/op-postgresql96.yml \
+  -o docker-broker-deployment/services/op-mysql56.yml \
+  -o docker-broker-deployment/services/op-redis32.yml \
   -o <(./pick-from-cloud-config.sh)
 ```
+
+NOTE: remember to add `--vars-store` if your BOSH environment does not have credhub/config-server.
 
 That's it! BOSH will bring up a cluster of servers that each run the `docker` daemon. They also each have a local agent [`cf-containers-broker`](https://github.com/cloudfoundry-community/cf-containers-broker/), and will start downloading the three Docker images corresponding to the three `services/*.yml` files included above. The deployment also includes the coordinating service broker `subway`.
 
@@ -94,11 +96,11 @@ system_domain=$(bosh -d $cf_deployment manifest | bosh int - --path /instance_gr
 skip_verify=$(bosh -d $cf_deployment manifest | bosh int - --path /instance_groups/name=api/jobs/name=cloud_controller_ng/properties/ssl/skip_cert_verify)
 admin_password=$(bosh -d $cf_deployment manifest | bosh int - --path /instance_groups/name=uaa/jobs/name=uaa/properties/uaa/scim/users/name=admin/password)
 
-bosh deploy docker-broker.yml --vars-store tmp/creds.yml \
-  -o op-cf-integration.yml \
-  -o services/op-postgresql96.yml \
-  -o services/op-mysql56.yml \
-  -o services/op-redis32.yml \
+bosh deploy docker-broker-deployment/docker-broker.yml \
+  -o docker-broker-deployment/op-cf-integration.yml \
+  -o docker-broker-deployment/services/op-postgresql96.yml \
+  -o docker-broker-deployment/services/op-mysql56.yml \
+  -o docker-broker-deployment/services/op-redis32.yml \
   -v cf-api-url=https://api.$system_domain \
   -v cf-skip-ssl-validation=$skip_verify \
   -v cf-admin-username=admin \
