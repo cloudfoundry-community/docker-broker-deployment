@@ -6,14 +6,18 @@
 # your deployment. It will print to stderr the choices it made.
 #
 # Usage:
-#   bosh deploy manifests/redis.yml -o <(./manifests/operators/pick-from-cloud-config.sh)
+#   bosh deploy manifests/redis.yml -o <(./manifests/operators/pick-from-cloud-config.sh docker-broker.yml)
+#   bosh deploy manifests/redis.yml -o <(./manifests/operators/pick-from-cloud-config.sh docker-broker-solo.yml)
 
 : ${BOSH_ENVIRONMENT:?required}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-instance_groups=$(bosh int docker-broker.yml "$@" --path /instance_groups | grep "^  name:" | awk '{print $2}' | sort | uniq)
+manifest=$1
+shift
+[[ -z $manifest ]] && { manifest=docker-broker.yml; }
+instance_groups=$(bosh int $manifest "$@" --path /instance_groups | grep "^  name:" | awk '{print $2}' | sort | uniq)
 
 cloud_config=$(bosh cloud-config)
 if [[ -z ${cloud_config} ]]; then
