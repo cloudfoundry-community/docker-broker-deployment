@@ -1,0 +1,11 @@
+- type: replace
+  path: /instance_groups/name=subway/networks/name=default/name
+  value: ((docker_broker_network_name))
+
+- type: replace
+  path: /instance_groups/name=docker/networks/name=default/name
+  value: ((docker_broker_network_name))
+
+- type: replace
+  path: /instance_groups/name=sanity-test/networks/name=default/name
+  value: ((docker_broker_network_name))
