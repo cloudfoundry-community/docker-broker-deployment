@@ -166,15 +166,3 @@ For a redis service the output might look like below. For other services it will
  }
 }
 ```
-
-### Single VM
-
-You can have a single vm deployment using the `docker-broker-solo.yml` manifest:
-
-```
-bosh deploy docker-broker-deployment/docker-broker-solo.yml \
-  -o docker-broker-deployment/operators/services/op-redis32.yml \
-  -o <(./docker-broker-deployment/operators/pick-from-cloud-config.sh docker-broker-solo.yml)
-```
-
-The other operator files might not yet work with this single instance deployment.

@@ -5,7 +5,7 @@ instance_groups:
 - name: subway
   azs: [z1]
   instances: 1
-  vm_type: default
+  vm_type: sharedcpu
   stemcell: default
   networks: [{name: default}]
   jobs:
@@ -27,7 +27,7 @@ instance_groups:
   azs: [z1,z2,z3]
   instances: 3
   persistent_disk: 65536
-  vm_type: default
+  vm_type: minimal
   stemcell: default
   networks: [{name: default}]
   jobs:
