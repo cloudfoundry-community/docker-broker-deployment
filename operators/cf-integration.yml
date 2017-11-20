@@ -37,47 +37,33 @@
   value: ((broker-route-uri))
 
 - type: replace
-  path: /instance_groups/-
+  path: /instance_groups/name=subway/jobs/-
   value:
     name: broker-registrar
-    instances: 1
-    azs: [z1]
+    release: broker-registrar
     lifecycle: errand
-    vm_type: default
-    stemcell: default
-    networks: [{name: default}]
-    jobs:
-    - name: broker-registrar
-      release: broker-registrar
-      consumes:
-        servicebroker:
-          from: broker
-      properties:
-        cf:
-          api_url: ((cf-api-url))
-          username: ((cf-admin-username))
-          password: ((cf-admin-password))
-          skip_ssl_validation: ((cf-skip-ssl-validation))
+    consumes:
+      servicebroker:
+        from: broker
+    properties:
+      cf:
+        api_url: ((cf-api-url))
+        username: ((cf-admin-username))
+        password: ((cf-admin-password))
+        skip_ssl_validation: ((cf-skip-ssl-validation))
 
 - type: replace
-  path: /instance_groups/-
+  path: /instance_groups/name=subway/jobs/-
   value:
     name: broker-deregistrar
-    instances: 1
-    azs: [z1]
+    release: broker-registrar
     lifecycle: errand
-    vm_type: default
-    stemcell: default
-    networks: [{name: default}]
-    jobs:
-    - name: broker-deregistrar
-      release: broker-registrar
-      consumes:
-        servicebroker:
-          from: broker
-      properties:
-        cf:
-          api_url: ((cf-api-url))
-          username: ((cf-admin-username))
-          password: ((cf-admin-password))
-          skip_ssl_validation: ((cf-skip-ssl-validation))
+    consumes:
+      servicebroker:
+        from: broker
+    properties:
+      cf:
+        api_url: ((cf-api-url))
+        username: ((cf-admin-username))
+        password: ((cf-admin-password))
+        skip_ssl_validation: ((cf-skip-ssl-validation))
