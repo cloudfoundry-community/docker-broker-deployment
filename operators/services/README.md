@@ -8,10 +8,10 @@ There are two sets of files in this folder - relatively maintained services and 
 
 Relatively maintained services:
 
-* MySQL 5.6 - `op-mysql56.yml` from https://github.com/frodenas/docker-mysql
-* PostgreSQL 9.6 - `op-postgresql96.yml` from https://github.com/frodenas/docker-postgresql
-* Redis 3.2 - `op-redis32.yml` from https://github.com/frodenas/docker-redis
+* MySQL 5.6 - `mysql56.yml` from https://github.com/frodenas/docker-mysql
+* PostgreSQL 9.6 - `postgresql96.yml` from https://github.com/frodenas/docker-postgresql
+* Redis 3.2 - `redis32.yml` from https://github.com/frodenas/docker-redis
 
 The source Dockerfile and internal scripts are found in the repository linked above. Also the `documentationUrl` field links to this repository in each service file.
 
-Relatively unmaintained services are without the `op-` prefix.
+Relatively unmaintained services are in `aged` subfolder.

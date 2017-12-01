@@ -49,9 +49,9 @@ The example above was created using the following deployment:
 ```
 git clone https://github.com/cloudfoundry-community/docker-broker-deployment
 bosh deploy docker-broker-deployment/docker-broker.yml \
-  -o docker-broker-deployment/operators/services/op-postgresql96.yml \
-  -o docker-broker-deployment/operators/services/op-mysql56.yml \
-  -o docker-broker-deployment/operators/services/op-redis32.yml \
+  -o docker-broker-deployment/operators/services/postgresql96.yml \
+  -o docker-broker-deployment/operators/services/mysql56.yml \
+  -o docker-broker-deployment/operators/services/redis32.yml \
   -o <(./docker-broker-deployment/operators/pick-from-cloud-config.sh)
 ```
 
@@ -98,16 +98,16 @@ admin_password=$(bosh -d $cf_deployment manifest | bosh int - --path /instance_g
 
 bosh deploy docker-broker-deployment/docker-broker.yml \
   -o docker-broker-deployment/operators/cf-integration.yml \
-  -o docker-broker-deployment/operators/services/op-postgresql96.yml \
-  -o docker-broker-deployment/operators/services/op-mysql56.yml \
-  -o docker-broker-deployment/operators/services/op-redis32.yml \
+  -o docker-broker-deployment/operators/services/postgresql96.yml \
+  -o docker-broker-deployment/operators/services/mysql56.yml \
+  -o docker-broker-deployment/operators/services/redis32.yml \
   -v cf-api-url=https://api.$system_domain \
   -v cf-skip-ssl-validation=$skip_verify \
   -v cf-admin-username=admin \
   -v "cf-admin-password=$admin_password" \
   -v broker-route-name=docker-broker \
   -v broker-route-uri=docker-broker.$system_domain \
-  -o <(./docker-broker-deployment/operators/pick-from-cloud-config.sh -o op-cf-integration.yml)
+  -o <(./docker-broker-deployment/operators/pick-from-cloud-config.sh -o docker-broker-deployment/operators/cf-integration.yml)
 ```
 
 Update the `-v` variables for your Cloud Foundry and system domain.
