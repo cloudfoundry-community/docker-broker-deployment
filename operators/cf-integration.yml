@@ -3,17 +3,15 @@
   path: /releases/-
   value:
     name: broker-registrar
-    version: 3.2.2
-    url: https://bosh.io/d/github.com/cloudfoundry-community/broker-registrar-boshrelease?v=3.2.2
-    sha1: f82c6a346d871ccb9835b8e6341f966cf7ebc7c9
+    version: 3.4.0
+    url: git+https://github.com/cloudfoundry-community/broker-registrar-boshrelease
 
 - type: replace
   path: /releases/-
   value:
     name: routing
     version: 0.147.0
-    url: https://bosh.io/d/github.com/cloudfoundry-incubator/cf-routing-release?v=0.147.0
-    sha1: 526af8e02a170b424f80148eed95f373bf831a6a
+    url: git+https://github.com/cloudfoundry-incubator/cf-routing-release
 
 - type: replace
   path: /instance_groups/name=subway/jobs/-
@@ -43,8 +41,8 @@
     instances: 1
     azs: [z1]
     lifecycle: errand
-    vm_type: default
-    stemcell: default
+    vm_type: minimal
+    stemcell: trusty
     networks: [{name: default}]
     jobs:
     - name: broker-registrar
@@ -66,8 +64,8 @@
     instances: 1
     azs: [z1]
     lifecycle: errand
-    vm_type: default
-    stemcell: default
+    vm_type: minimal
+    stemcell: trusty
     networks: [{name: default}]
     jobs:
     - name: broker-deregistrar
